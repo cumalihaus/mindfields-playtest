@@ -1,0 +1,17 @@
+{
+  "name": "Mindfields",
+  "short_name": "Mindfields",
+  "description": "A grid-based deckbuilder roguelike about conversations.",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#f3f3ef",
+  "theme_color": "#f3f3ef",
+  "start_url": ".",
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
