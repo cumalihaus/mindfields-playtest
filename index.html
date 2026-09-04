@@ -1731,6 +1731,13 @@ main { display: flex; gap: 10px; align-items: flex-start; justify-content: cente
      the vignette hole scales with it. syncFloor's origin math already works
      (rects are visual px = body-level px). */
   body::before { background-size: calc(var(--cell) * 2 * 1.125) calc(var(--cell) * 2 * 1.125); }
+  /* consequence 5 (Sevgin's title-screen catch): #landing, contained by the
+     transformed app box, only covers the app's LAYOUT height — on the short
+     title state the env floor peeked out below it. The title screen was
+     always plain --bg (landing's own ground), so the env floor simply turns
+     off while the landing is up — seamless, no magic-number extents. */
+  body:has(#landing:not(.hidden))::before,
+  body:has(#landing:not(.hidden))::after { display: none; }
   body::after {
     background: radial-gradient(711px 435px at var(--vig-x, 50%) var(--vig-y, 46%),
       transparent 78%, var(--bg) 100%);
@@ -7062,7 +7069,7 @@ function tutListenAllowed() {
 // v2 schema (adds per-run card/action telemetry). The key bump orphans
 // pre-card-tracking history so evaluation datasets stay homogeneous.
 const RUNS_KEY = 'mindfields-runs-v2';
-const GAME_VERSION = '0.8.82'; // stamped on every run record — never analyze mixed-version batches blind
+const GAME_VERSION = '0.8.83'; // stamped on every run record — never analyze mixed-version batches blind
 
 function loadRuns() {
   try { return JSON.parse(localStorage.getItem(RUNS_KEY)) || []; }
