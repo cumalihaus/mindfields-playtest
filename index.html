@@ -1725,6 +1725,16 @@ main { display: flex; gap: 10px; align-items: flex-start; justify-content: cente
      Over-extend them sideways; the excess clips at the viewport, harmless.
      (#feed-panel / #export-panel are body children — already full-bleed.) */
   #overlay, #landing, #settings, #portrait-guard { left: -24px; right: -24px; }
+  /* consequence 4 (Sevgin's catch): the ENVIRONMENTAL floor lives on body,
+     OUTSIDE the transform — its checker must use the VISUAL cell (72×1.125
+     = 81px) or the board's pattern never lines up with its continuation;
+     the vignette hole scales with it. syncFloor's origin math already works
+     (rects are visual px = body-level px). */
+  body::before { background-size: calc(var(--cell) * 2 * 1.125) calc(var(--cell) * 2 * 1.125); }
+  body::after {
+    background: radial-gradient(711px 435px at var(--vig-x, 50%) var(--vig-y, 46%),
+      transparent 78%, var(--bg) 100%);
+  }
 }
 
 </style>
@@ -7052,7 +7062,7 @@ function tutListenAllowed() {
 // v2 schema (adds per-run card/action telemetry). The key bump orphans
 // pre-card-tracking history so evaluation datasets stay homogeneous.
 const RUNS_KEY = 'mindfields-runs-v2';
-const GAME_VERSION = '0.8.81'; // stamped on every run record — never analyze mixed-version batches blind
+const GAME_VERSION = '0.8.82'; // stamped on every run record — never analyze mixed-version batches blind
 
 function loadRuns() {
   try { return JSON.parse(localStorage.getItem(RUNS_KEY)) || []; }
