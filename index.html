@@ -953,9 +953,12 @@ main { display: flex; gap: 10px; align-items: flex-start; justify-content: cente
 }
 .card .card-visual {
   /* bleeds 2px over each side border (Figma places the visual at x -2,
-     width 120) so art + checker span the full card width */
+     width 120) so art + checker span the full card width; the clip crops
+     that bleed back out — in Figma the frame stroke paints ABOVE children,
+     in CSS a child paints above the parent's border, so without it the art
+     covers the side borders (Sevgin's catch, 2026-09-08) */
   height: 80px; flex: none; overflow: hidden; position: relative;
-  margin: 0 -2px;
+  margin: 0 -2px; clip-path: inset(0 var(--stroke-m));
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80'%3E%3Cg fill='%23ececec'%3E%3Crect x='0' y='16' width='12' height='16' opacity='0.4'/%3E%3Crect x='0' y='48' width='12' height='16' opacity='0.2'/%3E%3Crect x='12' y='0' width='16' height='16' opacity='0.2'/%3E%3Crect x='12' y='32' width='16' height='16'/%3E%3Crect x='12' y='64' width='16' height='16' opacity='0.2'/%3E%3Crect x='28' y='16' width='16' height='16'/%3E%3Crect x='28' y='48' width='16' height='16' opacity='0.6'/%3E%3Crect x='44' y='0' width='16' height='16' opacity='0.4'/%3E%3Crect x='44' y='32' width='16' height='16'/%3E%3Crect x='44' y='64' width='16' height='16' opacity='0.2'/%3E%3Crect x='60' y='16' width='16' height='16'/%3E%3Crect x='60' y='48' width='16' height='16' opacity='0.6'/%3E%3Crect x='76' y='0' width='16' height='16' opacity='0.4'/%3E%3Crect x='76' y='32' width='16' height='16'/%3E%3Crect x='76' y='64' width='16' height='16' opacity='0.2'/%3E%3Crect x='92' y='16' width='16' height='16'/%3E%3Crect x='92' y='48' width='16' height='16' opacity='0.6'/%3E%3Crect x='108' y='0' width='12' height='16' opacity='0.2'/%3E%3Crect x='108' y='32' width='12' height='16' opacity='0.4'/%3E%3Crect x='108' y='64' width='12' height='16' opacity='0.2'/%3E%3C/g%3E%3C/svg%3E") center / 120px 80px no-repeat;
 }
 .card .card-visual > svg { display: block; width: 120px; height: 80px; }
@@ -7104,7 +7107,7 @@ function tutListenAllowed() {
 // v2 schema (adds per-run card/action telemetry). The key bump orphans
 // pre-card-tracking history so evaluation datasets stay homogeneous.
 const RUNS_KEY = 'mindfields-runs-v2';
-const GAME_VERSION = '0.8.85'; // stamped on every run record — never analyze mixed-version batches blind
+const GAME_VERSION = '0.8.86'; // stamped on every run record — never analyze mixed-version batches blind
 
 function loadRuns() {
   try { return JSON.parse(localStorage.getItem(RUNS_KEY)) || []; }
